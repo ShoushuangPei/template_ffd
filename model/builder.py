@@ -187,7 +187,7 @@ class ModelBuilder(object):
     def get_eval_metric_ops(self, predictions, labels):
         """Get evaluation metrics. Defaults to empty dictionary."""
         return dict()
-
+#计算loss
     def get_total_loss(self, inference_loss):
         """
         Get total loss, combining inference loss and regularization losses.
