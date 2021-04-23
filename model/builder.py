@@ -15,7 +15,7 @@ def _tuple_generator(nested_vals):
             yield tuple(next(i) for i in iters)
     except StopIteration:
         pass
-
+#yield相当于return
 
 def _list_generator(nested_vals):
     iters = tuple(iter(nested_generator(v)) for v in nested_vals)
