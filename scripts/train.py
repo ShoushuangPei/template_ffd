@@ -10,7 +10,7 @@ def train(model_id, max_steps):
     if max_steps is None:
         max_steps = builder.default_max_steps
     builder.train(max_steps=max_steps)
-
+#调用model/builder.py中的train函数
 
 if __name__ == '__main__':
     import argparse
