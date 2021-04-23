@@ -8,6 +8,7 @@ estimator_dir = os.path.join(os.path.dirname(__file__), '_model')
 
 
 def _tuple_generator(nested_vals):
+    #tuple元组
     iters = tuple(iter(nested_generator(v)) for v in nested_vals)
     try:
         while True:
@@ -33,11 +34,11 @@ def _dict_generator(nested_vals):
     except StopIteration:
         pass
 
-
+#isinstance判断是否为np.ndarray类型
 def nested_generator(nested_vals):
     if isinstance(nested_vals, np.ndarray):
         return nested_vals
-    elif isinstance(nested_vals, (list, tuple)):
+    elif isinstance(nested_vals, (list, tuple)):#是否为list或tuple类型的一种
         if all(isinstance(v, str) for v in nested_vals):
             return nested_vals
         elif isinstance(nested_vals, tuple):
@@ -50,7 +51,7 @@ def nested_generator(nested_vals):
         raise TypeError(
             'Unrecognized type for nested_generator: %s'
             % str(type(nested_vals)))
-
+#未知类型返回错误
 
 def initialize_uninitialized_variables(sess):
     global_vars = tf.global_variables()
