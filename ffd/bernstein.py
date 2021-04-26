@@ -23,4 +23,5 @@ def trivariate_bernstein(stu, lattice):
     stu = np.reshape(stu, (-1, 1, 1, 1, 3))
     weights = bernstein_poly(n=lmn, v=v, stu=stu)
     weights = np.prod(weights, axis=-1, keepdims=True)
+    #np.prod连乘
     return np.sum(weights * lattice, axis=(1, 2, 3))
