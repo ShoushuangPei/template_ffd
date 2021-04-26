@@ -2,7 +2,7 @@ import numpy as np
 import util
 from bernstein import bernstein_poly, trivariate_bernstein
 
-
+#求s t u 系数
 def xyz_to_stu(xyz, origin, stu_axes):
     if stu_axes.shape == (3,):
         stu_axes = np.diag(stu_axes)
