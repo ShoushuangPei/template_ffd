@@ -5,6 +5,7 @@ from util import mesh3d
 
 def bernstein_poly(n, v, stu):
     coeff = comb(n, v)
+    #计算排列组合C n,v
     weights = coeff * ((1 - stu) ** (n - v)) * (stu ** v)
     return weights
 
