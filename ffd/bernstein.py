@@ -2,7 +2,7 @@ import numpy as np
 from scipy.special import comb
 from util import mesh3d
 
-
+#伯恩斯坦多项式
 def bernstein_poly(n, v, stu):
     coeff = comb(n, v)
     #计算排列组合C n,v
