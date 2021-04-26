@@ -44,7 +44,7 @@ def get_control_points(dims, stu_origin, stu_axes):
     xyz_points = stu_to_xyz(stu_points, stu_origin, stu_axes)
     return xyz_points
 
-
+#获取形变矩阵
 def get_stu_deformation_matrix(stu, dims):
     v = util.mesh3d(
         *(np.arange(0, d+1, dtype=np.int32) for d in dims),
