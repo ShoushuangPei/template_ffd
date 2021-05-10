@@ -261,6 +261,8 @@ class TemplateFfdBuilder(builder.ModelBuilder):
         n_templates = self.n_templates
         #dense是全连接层
         dp = tf.layers.dense(features, n_templates * n_control_points * 3, kernel_initializer=tf.random_normal_initializer(stddev=1e-4))
+        #n_templates * n_control_points * 3 表示输入矩阵的维度
+        #kernel_initializer是卷积核的初始化器
         dp = tf.reshape(dp, (-1, n_templates, n_control_points, 3))
         probs = tf.layers.dense(features, n_templates, activation=tf.nn.softmax)
         eps = self.params.get('prob_eps', 0.1)
