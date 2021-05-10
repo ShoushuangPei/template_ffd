@@ -36,6 +36,7 @@ def get_stu_control_points(dims):
     stu_lattice = util.mesh3d(
         *(np.linspace(0, 1, d+1) for d in dims), dtype=np.float32)
     stu_points = np.reshape(stu_lattice, (-1, 3))
+    #np.reshape(),参数-1表示shape自适应调整
     return stu_points
 
 
