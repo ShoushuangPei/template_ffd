@@ -239,30 +239,30 @@ class TemplateFfdBuilder(builder.ModelBuilder):
         return features
 
     def get_inference(self, features, mode):
-        """Get inferred value of the model."""
+        """Get inferred value of the model."""获取模型的推测值
         inference_params = self.params.get('inference_params', {})
         training = mode == tf.estimator.ModeKeys.TRAIN
         image = features['image']
+        #图片特征
         example_id = features['example_id']
+        #样例编号
         cat_id = features['cat_id']
+        #类别编号
         view_index = features['view_index']
+        #视点编号
         features = self.get_image_features(image, mode, **inference_params)
+        #图片特征
         features = tf.layers.flatten(features)
-
+        #图片特征，tf.layers.flatten相当于reshape
         for n_dense in inference_params.get('final_dense_nodes', [512]):
-            features = tf.layers.dense(
-                features, n_dense, activation=batch_norm_then(
-                    tf.nn.relu6, training=training))
+            features = tf.layers.dense(features, n_dense, activation=batch_norm_then(tf.nn.relu6, training=training))
 
         n_control_points = self.n_control_points
         n_templates = self.n_templates
-
-        dp = tf.layers.dense(
-            features, n_templates * n_control_points * 3,
-            kernel_initializer=tf.random_normal_initializer(stddev=1e-4))
+        #dense是全连接层
+        dp = tf.layers.dense(features, n_templates * n_control_points * 3, kernel_initializer=tf.random_normal_initializer(stddev=1e-4))
         dp = tf.reshape(dp, (-1, n_templates, n_control_points, 3))
-        probs = tf.layers.dense(
-            features, n_templates, activation=tf.nn.softmax)
+        probs = tf.layers.dense(features, n_templates, activation=tf.nn.softmax)
         eps = self.params.get('prob_eps', 0.1)
         if eps > 0:
             probs = (1 - eps)*probs + eps / n_templates
