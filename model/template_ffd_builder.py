@@ -305,7 +305,7 @@ class TemplateFfdBuilder(builder.ModelBuilder):
 
     def get_inferred_point_clouds(self, dp):#获取推断的新点云坐标
         b, p = self.get_ffd_tensors()
-        inferred_point_clouds = tf.einsum('ijk,likm->lijm', b, p + dp)
+        inferred_point_clouds = tf.einsum('ijk,likm->lijm', b, p + dp)#全局关键语句，推测新点云位置
         return inferred_point_clouds
 
     def get_chamfer_loss(self, gamma, dp, ground_truth_cloud):
