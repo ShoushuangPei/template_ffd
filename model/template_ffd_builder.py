@@ -176,20 +176,20 @@ class TemplateFfdBuilder(builder.ModelBuilder):
         self._initializer_run = False
 
     @property
-    def n_ffd_samples(self):
+    def n_ffd_samples(self): #采样点数16384
         return self.params.get('n_ffd_samples', 16384)
 
     @property
-    def view_index(self):
+    def view_index(self): #获取视点数
         return self.params.get('view_index', 5)
 
-    def _get_ffd_data(self, ffd_dataset):
+    def _get_ffd_data(self, ffd_dataset):# 返回 类别，序号，伯恩斯坦多项式，控制点
         for cat_id, example_id in self.template_ids:
             ffd_data = ffd_dataset[cat_id, example_id]
             b, p = (np.array(ffd_data[k]) for k in ('b', 'p'))
             yield cat_id, example_id, b, p
 
-    def get_ffd_data(self, ffd_dataset=None):
+    def get_ffd_data(self, ffd_dataset=None):# 返回ffd的data数据
         if ffd_dataset is None:
             n_ffd_points = self.n_ffd_samples
             ffd_dataset = get_ffd_dataset(
@@ -199,8 +199,8 @@ class TemplateFfdBuilder(builder.ModelBuilder):
         else:
             return self._get_ffd_data(ffd_dataset)
 
-    def get_ffd_tensors(self, ffd_dataset=None):
-        n_ffd_resamples = self.params.get('n_ffd_resamples', 1024)
+    def get_ffd_tensors(self, ffd_dataset=None):#获取ffd的tensors
+        n_ffd_resamples = self.params.get('n_ffd_resamples', 1024) #重采样1024点
         bs = []
         ps = []
         for cat_id, example_id, b, p in self.get_ffd_data(ffd_dataset):
@@ -214,7 +214,7 @@ class TemplateFfdBuilder(builder.ModelBuilder):
 
         return b, p
 
-    def get_image_features(self, image, mode, **inference_params):
+    def get_image_features(self, image, mode, **inference_params):#获取图像特征features
         alpha = inference_params.get('alpha', 1)
         load_weights = self._initializer_run
         features = get_mobilenet_features(image, mode, load_weights, alpha)
@@ -276,7 +276,7 @@ class TemplateFfdBuilder(builder.ModelBuilder):
             dp=dp)
 
     @property
-    def cat_id(self):
+    def cat_id(self):#获取类别号
         cat_desc = self.params['cat_desc']
         if isinstance(cat_desc, (list, tuple)):
             return [cat_desc_to_id(c) for c in cat_desc]
@@ -284,11 +284,11 @@ class TemplateFfdBuilder(builder.ModelBuilder):
             return cat_desc_to_id(cat_desc)
 
     @property
-    def n_templates(self):
+    def n_templates(self):#获取模型数量
         return len(self.template_ids)
 
     @property
-    def n_control_points(self):
+    def n_control_points(self):#获取控制点数量
         return (self.n + 1)**3
 
     @property
@@ -303,7 +303,7 @@ class TemplateFfdBuilder(builder.ModelBuilder):
             return tuple(itertools.chain(
                 *(_get_cat_template_ids(c, i) for c, i in zip(cat_id, idxs))))
 
-    def get_inferred_point_clouds(self, dp):
+    def get_inferred_point_clouds(self, dp):#获取推断的新点云坐标
         b, p = self.get_ffd_tensors()
         inferred_point_clouds = tf.einsum('ijk,likm->lijm', b, p + dp)
         return inferred_point_clouds
