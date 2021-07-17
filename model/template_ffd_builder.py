@@ -206,7 +206,7 @@ class TemplateFfdBuilder(builder.ModelBuilder):
         for cat_id, example_id, b, p in self.get_ffd_data(ffd_dataset):
             b = tf.constant(b, dtype=tf.float32)
             b = sample_tf(
-                b, n_ffd_resamples, axis=0, name='b_resampled_%s' % example_id)
+                b, n_ffd_resamples, axis=0, name='b_resampled_%s' % example_id) #1024采样
             bs.append(b)
             ps.append(p)
         b = tf.stack(bs)
